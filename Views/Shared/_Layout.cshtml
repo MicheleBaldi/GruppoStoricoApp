@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GruppoStoricoApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GsApp</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDdlSband" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Sbandieratori
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDllSband">
+                                <li><a class="dropdown-item" text-dark" asp-area="" asp-controller="Persona" asp-action="Index" asp-route-ruoloId="1">Persone</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Vestiti</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Vestito" asp-action="Index" asp-route-ruoloId="1">Vestito</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Camicia" asp-action="Index" asp-route-ruoloId="1">Camicia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Calzamaglia" asp-action="Index" asp-route-ruoloId="1">Calzamaglia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Cintura" asp-action="Index" asp-route-ruoloId="1">Cintura</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Stivale" asp-action="Index" asp-route-ruoloId="1">Stivali</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDdlTamb" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Tamburi
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDdlTamb">
+                                <li><a class="dropdown-item" text-dark" asp-area="" asp-controller="Persona" asp-action="Index" asp-route-ruoloId="2">Persone</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Vestiti</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Vestito" asp-action="Index" asp-route-ruoloId="2">Vestito</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Camicia" asp-action="Index" asp-route-ruoloId="2">Camicia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Calzamaglia" asp-action="Index" asp-route-ruoloId="2">Calzamaglia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Cintura" asp-action="Index" asp-route-ruoloId="2">Cintura</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Stivale" asp-action="Index" asp-route-ruoloId="2">Stivali</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDdlChia" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Chiarine
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDdlChia">
+                                <li><a class="dropdown-item" text-dark" asp-area="" asp-controller="Persona" asp-action="Index" asp-route-ruoloId="3">Persone</a></li>
+                                <li class="dropdown-submenu">
+                                    <a class="dropdown-item dropdown-toggle" href="#">Vestiti</a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Vestito" asp-action="Index" asp-route-ruoloId="3">Vestito</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Camicia" asp-action="Index" asp-route-ruoloId="3">Camicia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Calzamaglia" asp-action="Index" asp-route-ruoloId="3">Calzamaglia</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Cintura" asp-action="Index" asp-route-ruoloId="3">Cintura</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Stivale" asp-action="Index" asp-route-ruoloId="3">Stivali</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Evento" asp-action="Index">Eventi</a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2021 - GruppoStoricoApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

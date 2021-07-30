@@ -1,0 +1,78 @@
+﻿@model IEnumerable<GruppoStoricoApp.Models.PartecipazioneEvento>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Partecipanti @ViewData["Evento"]</h1>
+
+<p>
+    <a asp-action="Create" asp-route-ruoloId="1" asp-route-eventoId="@ViewData["EventoIdValue"]">Crea Partecipazione Sband</a>
+    <br />
+    <a asp-action="Create" asp-route-ruoloId="2" asp-route-eventoId="@ViewData["EventoIdValue"]">Crea Partecipazione Tamb</a>
+    <br />
+    <a asp-action="Create" asp-route-ruoloId="3" asp-route-eventoId="@ViewData["EventoIdValue"]">Crea Partecipazione Chia</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Persona)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Persona.Ruolo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calzamaglia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Camicia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cintura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vestito)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Stivale)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Persona.Nome) @Html.DisplayFor(modelItem => item.Persona.Cognome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Persona.Ruolo.NomeRuolo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Calzamaglia.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Camicia.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cintura.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vestito.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Stivale.Numero)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.PartecipazioneEventoID">Modifica</a> |
+                    <a asp-action="Details" asp-route-id="@item.PartecipazioneEventoID">Dettaglio</a> |
+                    <a asp-action="Delete" asp-route-id="@item.PartecipazioneEventoID">Elimina</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
