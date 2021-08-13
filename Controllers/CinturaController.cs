@@ -108,7 +108,8 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["RuoloID"] = new SelectList(_context.Ruoli, "ID", "ID", cintura.RuoloID);
+            ViewData["RuoloIdValue"] = cintura.RuoloID;
+            PopulateRuoloDropDownList(cintura.RuoloID);
             return View(cintura);
         }
 
@@ -142,9 +143,8 @@ namespace GruppoStoricoApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { ruoloId = cintura.RuoloID });
             }
-            ViewData["RuoloID"] = new SelectList(_context.Ruoli, "ID", "ID", cintura.RuoloID);
             return View(cintura);
         }
 

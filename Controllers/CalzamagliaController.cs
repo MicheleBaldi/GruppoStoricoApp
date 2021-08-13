@@ -107,7 +107,9 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["RuoloID"] = new SelectList(_context.Ruoli, "ID", "ID", calzamaglia.RuoloID);
+            ViewData["RuoloIdValue"] = calzamaglia.RuoloID;
+            PopulateRuoloDropDownList(calzamaglia.RuoloID);
+
             return View(calzamaglia);
         }
 
@@ -141,9 +143,8 @@ namespace GruppoStoricoApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { ruoloId = calzamaglia.RuoloID });
             }
-            ViewData["RuoloID"] = new SelectList(_context.Ruoli, "ID", "ID", calzamaglia.RuoloID);
             return View(calzamaglia);
         }
 

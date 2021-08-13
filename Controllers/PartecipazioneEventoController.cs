@@ -22,7 +22,7 @@ namespace GruppoStoricoApp.Controllers
         }
 
         // GET: PartecipazioneEvento
-        public async Task<IActionResult> Index(int? eventoId)
+        public async Task<IActionResult> Index(int? eventoId, string filterRuolo)
         {
             var partEv = _context.PartecipazioniEventi
                 .Include(p => p.Calzamaglia)
@@ -30,13 +30,22 @@ namespace GruppoStoricoApp.Controllers
                 .Include(p => p.Cintura)
                 .Include(p => p.Evento)
                 .Include(p => p.Persona)
+                .ThenInclude(r => r.Ruolo)
                 .Include(p => p.Stivale)
                 .Include(p => p.Vestito)
                 .Where(p => p.Evento.ID == eventoId.Value)
                 .AsNoTracking();
 
+            if (!string.IsNullOrEmpty(filterRuolo))
+            {
+                partEv = partEv.Where(s => s.Persona.RuoloID == int.Parse(filterRuolo));
+            }
+            PopulateRuoloDropDownList(filterRuolo);
+
             ViewData["EventoIdValue"] = eventoId.Value;
             ViewData["Evento"] = _context.Eventi.Where(c => c.ID == eventoId.Value).FirstOrDefaultAsync().Result.NomeEvento;
+
+            
 
             return View(await partEv.ToListAsync());
         }
@@ -55,6 +64,7 @@ namespace GruppoStoricoApp.Controllers
                 .Include(p => p.Cintura)
                 .Include(p => p.Evento)
                 .Include(p => p.Persona)
+                .ThenInclude(r => r.Ruolo)
                 .Include(p => p.Stivale)
                 .Include(p => p.Vestito)
                 .AsNoTracking()
@@ -72,6 +82,8 @@ namespace GruppoStoricoApp.Controllers
         public IActionResult Create(int ruoloID, int eventoId)
         {
             PopulateDropDownLists(ruoloID, eventoId);
+            ViewData["EventoIdValue"] = eventoId;
+            ViewData["Evento"] = _context.Eventi.Where(c => c.ID == eventoId).FirstOrDefaultAsync().Result.NomeEvento;
             return View();
         }
 
@@ -88,12 +100,12 @@ namespace GruppoStoricoApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index), new { eventoId = partecipazioneEvento.EventoID });
             }
-            PopulateDropDownLists(partecipazioneEvento.EventoID, partecipazioneEvento.PersonaId, partecipazioneEvento.CalzamagliaId, partecipazioneEvento.CamiciaId, partecipazioneEvento.CinturaId, partecipazioneEvento.VestitoId, partecipazioneEvento.StivaleId);
+            PopulateDropDownLists(0, partecipazioneEvento.EventoID, partecipazioneEvento.EventoID, partecipazioneEvento.PersonaId, partecipazioneEvento.CalzamagliaId, partecipazioneEvento.CamiciaId, partecipazioneEvento.CinturaId, partecipazioneEvento.VestitoId, partecipazioneEvento.StivaleId);
             return View(partecipazioneEvento);
         }
 
         // GET: PartecipazioneEvento/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int ruoloId)
         {
             if (id == null)
             {
@@ -112,6 +124,10 @@ namespace GruppoStoricoApp.Controllers
             ViewData["PersonaId"] = new SelectList(_context.Persone, "ID", "ID", partecipazioneEvento.PersonaId);
             ViewData["StivaleId"] = new SelectList(_context.Stivali, "ID", "ID", partecipazioneEvento.StivaleId);
             ViewData["VestitoId"] = new SelectList(_context.Vestiti, "ID", "ID", partecipazioneEvento.VestitoId);
+
+            ViewData["EventoIdValue"] = partecipazioneEvento.EventoID;
+            PopulateDropDownLists(ruoloId, partecipazioneEvento.EventoID, partecipazioneEvento.EventoID, partecipazioneEvento.PersonaId, partecipazioneEvento.CalzamagliaId, partecipazioneEvento.CamiciaId, partecipazioneEvento.CinturaId, partecipazioneEvento.VestitoId, partecipazioneEvento.StivaleId);
+
             return View(partecipazioneEvento);
         }
 
@@ -200,6 +216,14 @@ namespace GruppoStoricoApp.Controllers
                                orderby d.Numero
                                select d;
             ViewBag.StivaleID = new SelectList(stivaleQuery.AsNoTracking(), "ID", "Numero", selectedStivale);
+        }
+
+        private void PopulateRuoloDropDownList(object selectedRuolo = null)
+        {
+            var ruoloQuery = from d in _context.Ruoli
+                             orderby d.NomeRuolo
+                             select d;
+            ViewBag.RuoloID = new SelectList(ruoloQuery.AsNoTracking(), "ID", "NomeRuolo", selectedRuolo);
         }
 
         // GET: PartecipazioneEvento/Delete/5

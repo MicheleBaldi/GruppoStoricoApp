@@ -103,11 +103,17 @@ namespace GruppoStoricoApp.Controllers
                 return NotFound();
             }
 
-            var vestito = await _context.Vestiti.FindAsync(id);
+            var vestito = await _context.Vestiti.
+                AsNoTracking().
+                FirstOrDefaultAsync(m => m.ID == id);
+
             if (vestito == null)
             {
                 return NotFound();
             }
+            ViewData["RuoloIdValue"] = vestito.RuoloID;
+            PopulateRuoloDropDownList(vestito.RuoloID);
+
             return View(vestito);
         }
 
@@ -141,7 +147,7 @@ namespace GruppoStoricoApp.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { ruoloId = vestito.RuoloID });
             }
             return View(vestito);
         }
