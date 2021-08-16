@@ -170,6 +170,7 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["RuoloIdValue"] = camicia.RuoloID;
 
             return View(camicia);
         }
@@ -182,7 +183,7 @@ namespace GruppoStoricoApp.Controllers
             var camicia = await _context.Camicie.FindAsync(id);
             _context.Camicie.Remove(camicia);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { ruoloId = camicia.RuoloID });
         }
 
         private bool CamiciaExists(int id)

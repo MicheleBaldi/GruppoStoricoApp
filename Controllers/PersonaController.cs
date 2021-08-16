@@ -173,7 +173,7 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["RuoloIdValue"] = persona.RuoloID;
             return View(persona);
         }
 

@@ -171,6 +171,7 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
+            ViewData["RuoloIdValue"] = calzamaglia.RuoloID;
 
             return View(calzamaglia);
         }
@@ -183,7 +184,7 @@ namespace GruppoStoricoApp.Controllers
             var calzamaglia = await _context.Calzamaglie.FindAsync(id);
             _context.Calzamaglie.Remove(calzamaglia);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { ruoloId = calzamaglia.RuoloID });
         }
 
         private bool CalzamagliaExists(int id)

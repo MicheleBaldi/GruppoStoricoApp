@@ -170,7 +170,7 @@ namespace GruppoStoricoApp.Controllers
             {
                 return NotFound();
             }
-
+            ViewData["RuoloIdValue"] = stivale.RuoloID;
             return View(stivale);
         }
 
@@ -182,7 +182,7 @@ namespace GruppoStoricoApp.Controllers
             var stivale = await _context.Stivali.FindAsync(id);
             _context.Stivali.Remove(stivale);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { ruoloId = stivale.RuoloID });
         }
 
         private bool StivaleExists(int id)

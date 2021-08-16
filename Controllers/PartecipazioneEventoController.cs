@@ -182,37 +182,54 @@ namespace GruppoStoricoApp.Controllers
             ViewBag.EventoID = new SelectList(eventoQuery.AsNoTracking(), "ID", "NomeEvento", selectedEvento);
 
             var personaQuery = from d in _context.Persone
-                               where d.RuoloID == ruoloId
+                               from pe in _context.PartecipazioniEventi
+                               .Where(pe => pe.PersonaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                orderby d.Nome
-                               select d;
+                               select  new
+                               {
+                                   ID = d.ID,
+                                   Nome = d.Nome + " " + d.Cognome
+                               };
             ViewBag.PersonaID = new SelectList(personaQuery.AsNoTracking(), "ID", "Nome", selectedPersona);
 
             var calzamagliaQuery = from d in _context.Calzamaglie
-                                   where d.RuoloID == ruoloId
+                                   from pe in _context.PartecipazioniEventi
+                                   .Where(pe => pe.CalzamagliaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                                   where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                    orderby d.Numero
                                    select d;
+
             ViewBag.CalzamagliaID = new SelectList(calzamagliaQuery.AsNoTracking(), "ID", "Numero", selectedCalzamaglia);
 
             var camiciaQuery = from d in _context.Camicie
-                               where d.RuoloID == ruoloId
+                               from pe in _context.PartecipazioniEventi
+                               .Where(pe => pe.CamiciaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
             ViewBag.CamiciaID = new SelectList(camiciaQuery.AsNoTracking(), "ID", "Numero", selectedCamicia);
 
             var cinturaQuery = from d in _context.Cinture
-                               where d.RuoloID == ruoloId
+                               from pe in _context.PartecipazioniEventi
+                               .Where(pe => pe.CinturaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
             ViewBag.CinturaID = new SelectList(cinturaQuery.AsNoTracking(), "ID", "Numero", selectedCintura);
 
             var vestitoQuery = from d in _context.Vestiti
-                               where d.RuoloID == ruoloId
+                               from pe in _context.PartecipazioniEventi
+                               .Where(pe => pe.VestitoId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
             ViewBag.VestitoID = new SelectList(vestitoQuery.AsNoTracking(), "ID", "Numero", selectedVestito);
 
             var stivaleQuery = from d in _context.Stivali
-                               where d.RuoloID == ruoloId
+                               from pe in _context.PartecipazioniEventi
+                               .Where(pe => pe.StivaleId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
             ViewBag.StivaleID = new SelectList(stivaleQuery.AsNoTracking(), "ID", "Numero", selectedStivale);

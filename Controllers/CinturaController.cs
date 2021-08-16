@@ -172,6 +172,7 @@ namespace GruppoStoricoApp.Controllers
                 return NotFound();
             }
 
+            ViewData["RuoloIdValue"] = cintura.RuoloID;
             return View(cintura);
         }
 
@@ -183,7 +184,7 @@ namespace GruppoStoricoApp.Controllers
             var cintura = await _context.Cinture.FindAsync(id);
             _context.Cinture.Remove(cintura);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { ruoloId = cintura.RuoloID });
         }
 
         private bool CinturaExists(int id)
