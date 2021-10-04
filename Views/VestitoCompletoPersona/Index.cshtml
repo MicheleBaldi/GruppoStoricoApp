@@ -1,0 +1,71 @@
+﻿@model IEnumerable<GruppoStoricoApp.Models.VestitoCompletoPersona>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Assegnazione Vestiti</h1>
+
+<p>
+    <a asp-action="Create" asp-route-ruoloId="1">Assegnazione Vestito Sband</a>
+    <br />
+    <a asp-action="Create" asp-route-ruoloId="2">Assegnazione Vestito Tamb</a>
+    <br />
+    <a asp-action="Create" asp-route-ruoloId="3">Assegnazione Vestito Chia</a>
+</p>
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <div class="row">
+            <div class="col-md-4">
+                Filtra per Ruolo:
+                <select name="filterRuolo" class="custom-select" asp-items="ViewBag.RuoloID">
+                    <option value="">Tutti</option>
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-2">
+                <input type="submit" value="Cerca" class="btn btn-primary btn-block" />
+            </div>
+        </div>
+    </div>
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Persona)
+            </th>
+            <th>
+                Vestito Completo
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Persona.Nome) @Html.DisplayFor(modelItem => item.Persona.Cognome)
+                </td>
+                <td>
+                    <table class="table">
+                        <tr><td>@Html.DisplayNameFor(model => model.Calzamaglia):</td><td>@Html.DisplayFor(modelItem => item.Calzamaglia.Numero)</td></tr>
+                        <tr><td>@Html.DisplayNameFor(model => model.Camicia):</td><td>@Html.DisplayFor(modelItem => item.Camicia.Numero)</td></tr>
+                        <tr><td>@Html.DisplayNameFor(model => model.Cintura):</td><td>@Html.DisplayFor(modelItem => item.Cintura.Numero)</td></tr>
+                        <tr><td>@Html.DisplayNameFor(model => model.Vestito):</td><td>@Html.DisplayFor(modelItem => item.Vestito.Numero)</td></tr>
+                        <tr><td>@Html.DisplayNameFor(model => model.Stivale):</td><td>@Html.DisplayFor(modelItem => item.Stivale.Numero)</td></tr>
+                    </table>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-ruoloId="@item.Persona.RuoloID" asp-route-id="@item.VestitoCompletoPersonaID">Modifica</a> <br />
+                    <a asp-action="Delete" asp-route-id="@item.VestitoCompletoPersonaID">Elimina</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

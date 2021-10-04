@@ -23,6 +23,7 @@ namespace GruppoStoricoApp.Data
         public DbSet<Stivale> Stivali { get; set; }
         public DbSet<Evento> Eventi { get; set; }
         public DbSet<PartecipazioneEvento> PartecipazioniEventi { get; set; }
+        public DbSet<VestitoCompletoPersona> VestitoCompletoPersona { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Persona>().ToTable("Persona");
@@ -34,6 +35,7 @@ namespace GruppoStoricoApp.Data
             modelBuilder.Entity<Stivale>().ToTable("Stivale");
             modelBuilder.Entity<Evento>().ToTable("Evento");
             modelBuilder.Entity<PartecipazioneEvento>().ToTable("PartecipazioneEvento");
+            modelBuilder.Entity<VestitoCompletoPersona>().ToTable("VestitoCompletoPersona");
 
             modelBuilder.Entity<Calzamaglia>()
             .HasIndex(p => new { p.Numero, p.RuoloID })
@@ -54,6 +56,10 @@ namespace GruppoStoricoApp.Data
             modelBuilder.Entity<Stivale>()
             .HasIndex(p => new { p.Numero, p.RuoloID })
             .IsUnique(true);
+
+            modelBuilder.Entity<VestitoCompletoPersona>()
+           .HasIndex(p => new { p.PersonaId, p.VestitoId, p.CamiciaId, p.CinturaId, p.CalzamagliaId, p.StivaleId })
+           .IsUnique(true);
 
             base.OnModelCreating(modelBuilder);
         }

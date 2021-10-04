@@ -1,0 +1,55 @@
+﻿@model GruppoStoricoApp.Models.VestitoCompletoPersona
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>VestitoCompletoPersona</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Persona)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Persona.Cognome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Calzamaglia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Calzamaglia.Taglia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Camicia)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Camicia.Taglia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cintura)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cintura.Taglia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Vestito)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Vestito.Taglia)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Stivale)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Stivale.ID)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.VestitoCompletoPersonaID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
