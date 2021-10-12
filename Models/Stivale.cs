@@ -15,6 +15,8 @@ namespace GruppoStoricoApp.Models
         public int Taglia { get; set; }
         [Required]
         public int RuoloID { get; set; }
+        [StringLength(500)]
+        public string Note { get; set; }
         public Ruolo Ruolo { get; set; }
 
         public ICollection<PartecipazioneEvento> PartecipazioniEventi { get; set; }

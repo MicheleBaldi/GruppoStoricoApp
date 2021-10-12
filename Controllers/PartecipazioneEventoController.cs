@@ -45,7 +45,7 @@ namespace GruppoStoricoApp.Controllers
             ViewData["EventoIdValue"] = eventoId.Value;
             ViewData["Evento"] = _context.Eventi.Where(c => c.ID == eventoId.Value).FirstOrDefaultAsync().Result.NomeEvento;
 
-            
+
 
             return View(await partEv.ToListAsync());
         }
@@ -81,10 +81,14 @@ namespace GruppoStoricoApp.Controllers
         // GET: PartecipazioneEvento/Create
         public IActionResult Create(int ruoloID, int eventoId)
         {
-            PopulateDropDownLists(ruoloID, eventoId);
+            //PopulateDropDownLists(ruoloID, eventoId, null);
+
+            var persVw = _context.Persone.Where(n => n.RuoloID == ruoloID);
+
+            ViewData["RuoloIdValue"] = ruoloID;
             ViewData["EventoIdValue"] = eventoId;
             ViewData["Evento"] = _context.Eventi.Where(c => c.ID == eventoId).FirstOrDefaultAsync().Result.NomeEvento;
-            return View();
+            return View(persVw);
         }
 
         // POST: PartecipazioneEvento/Create
@@ -92,16 +96,29 @@ namespace GruppoStoricoApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PartecipazioneEventoID,EventoID,PersonaId,CalzamagliaId,CamiciaId,CinturaId,VestitoId,StivaleId")] PartecipazioneEvento partecipazioneEvento)
+        public async Task<IActionResult> Create(List<int> personaId, int eventoId)
         {
-            if (ModelState.IsValid)
+            foreach (int id in personaId)
             {
-                _context.Add(partecipazioneEvento);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index), new { eventoId = partecipazioneEvento.EventoID });
+                VestitoCompletoPersona vestito = _context.VestitoCompletoPersona.Where(x => x.PersonaId == id).AsNoTracking().FirstOrDefault();
+                if (vestito != null)
+                {
+                    PartecipazioneEvento partecipazioneEvento = new PartecipazioneEvento()
+                    {
+                        EventoID = eventoId,
+                        PersonaId = id,
+                        CalzamagliaId = vestito.CalzamagliaId,
+                        CamiciaId = vestito.CamiciaId,
+                        CinturaId = vestito.CinturaId,
+                        VestitoId = vestito.VestitoId,
+                        StivaleId = vestito.StivaleId
+                    };
+                    _context.Add(partecipazioneEvento);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index), new { eventoId = partecipazioneEvento.EventoID });
+                }
             }
-            PopulateDropDownLists(0, partecipazioneEvento.EventoID, partecipazioneEvento.EventoID, partecipazioneEvento.PersonaId, partecipazioneEvento.CalzamagliaId, partecipazioneEvento.CamiciaId, partecipazioneEvento.CinturaId, partecipazioneEvento.VestitoId, partecipazioneEvento.StivaleId);
-            return View(partecipazioneEvento);
+            return View();
         }
 
         // GET: PartecipazioneEvento/Edit/5
@@ -182,56 +199,61 @@ namespace GruppoStoricoApp.Controllers
             ViewBag.EventoID = new SelectList(eventoQuery.AsNoTracking(), "ID", "NomeEvento", selectedEvento);
 
             var personaQuery = from d in _context.Persone
-                               from pe in _context.PartecipazioniEventi
-                               .Where(pe => pe.PersonaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                               //from pe in _context.PartecipazioniEventi
+                               //.Where(pe => pe.PersonaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                orderby d.Nome
-                               select  new
+                               select new 
                                {
                                    ID = d.ID,
                                    Nome = d.Nome + " " + d.Cognome
                                };
             ViewBag.PersonaID = new SelectList(personaQuery.AsNoTracking(), "ID", "Nome", selectedPersona);
 
+
             var calzamagliaQuery = from d in _context.Calzamaglie
-                                   from pe in _context.PartecipazioniEventi
-                                   .Where(pe => pe.CalzamagliaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                                   where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                                   //from pe in _context.PartecipazioniEventi
+                                   //.Where(pe => pe.CalzamagliaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                                   where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                    orderby d.Numero
                                    select d;
 
             ViewBag.CalzamagliaID = new SelectList(calzamagliaQuery.AsNoTracking(), "ID", "Numero", selectedCalzamaglia);
 
             var camiciaQuery = from d in _context.Camicie
-                               from pe in _context.PartecipazioniEventi
-                               .Where(pe => pe.CamiciaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                               //from pe in _context.PartecipazioniEventi
+                               //.Where(pe => pe.CamiciaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
+            
             ViewBag.CamiciaID = new SelectList(camiciaQuery.AsNoTracking(), "ID", "Numero", selectedCamicia);
 
             var cinturaQuery = from d in _context.Cinture
-                               from pe in _context.PartecipazioniEventi
-                               .Where(pe => pe.CinturaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                               //from pe in _context.PartecipazioniEventi
+                               //.Where(pe => pe.CinturaId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
+
             ViewBag.CinturaID = new SelectList(cinturaQuery.AsNoTracking(), "ID", "Numero", selectedCintura);
 
             var vestitoQuery = from d in _context.Vestiti
-                               from pe in _context.PartecipazioniEventi
-                               .Where(pe => pe.VestitoId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                               //from pe in _context.PartecipazioniEventi
+                               //.Where(pe => pe.VestitoId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
+
             ViewBag.VestitoID = new SelectList(vestitoQuery.AsNoTracking(), "ID", "Numero", selectedVestito);
 
             var stivaleQuery = from d in _context.Stivali
-                               from pe in _context.PartecipazioniEventi
-                               .Where(pe => pe.StivaleId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
-                               where d.RuoloID == ruoloId && pe.PartecipazioneEventoID == null
+                               //from pe in _context.PartecipazioniEventi
+                               //.Where(pe => pe.StivaleId == d.ID && pe.EventoID == eventoId).DefaultIfEmpty()
+                               where d.RuoloID == ruoloId //&& pe.PartecipazioneEventoID == null
                                orderby d.Numero
                                select d;
+
             ViewBag.StivaleID = new SelectList(stivaleQuery.AsNoTracking(), "ID", "Numero", selectedStivale);
         }
 
@@ -283,5 +305,10 @@ namespace GruppoStoricoApp.Controllers
         {
             return _context.PartecipazioniEventi.Any(e => e.PartecipazioneEventoID == id);
         }
+    }
+    public class PersonaSelect
+    {
+        public int Id { get; set; }
+        public string Nome { get; set; }
     }
 }

@@ -82,7 +82,7 @@ namespace GruppoStoricoApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Numero,Taglia,RuoloID")] Calzamaglia calzamaglia)
+        public async Task<IActionResult> Create([Bind("ID,Numero,Taglia,Note,RuoloID")] Calzamaglia calzamaglia)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +118,7 @@ namespace GruppoStoricoApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Numero,Taglia,RuoloID")] Calzamaglia calzamaglia)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Numero,Taglia,Note,RuoloID")] Calzamaglia calzamaglia)
         {
             if (id != calzamaglia.ID)
             {
